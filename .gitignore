@@ -1,0 +1,11 @@
+.venv/
+.env
+DATA/
+processed_data/
+.logfire/
+app/__pycache__/
+app/ingestion/__pycache__/
+app/ingestion/chunking/__pycache__
+app/ingestion/loaders/__pycache__
+app/services/__pycache__
+app/services/retrieval/__pycache__
