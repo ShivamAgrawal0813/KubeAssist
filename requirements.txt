@@ -41,3 +41,5 @@ portkey-ai
 ragas
 deepeval
 langfuse
+
+logging

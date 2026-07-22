@@ -1,12 +1,15 @@
 import logfire
 from app.agents.state import AgentState
-# from app.gateway import portkey_client, extract_cache_status
-from app.config import settings
-from langchain_groq import ChatGroq
+from app.gateways.client import get_langchain_llm
+
+# from app.gateways.client import portkey_client, extract_cache_status
+# from app.config import settings
+# from langchain_groq import ChatGroq
 
 #Direct Groq call - the LLM Gateway( Portkey routing/fallback/caching) arrives in a later stage
-llm = ChatGroq(api_key=settings.GROQ_API_KEY, model=settings.GROQ_MODEL, temperature=0.1)
+# llm = ChatGroq(api_key=settings.GROQ_API_KEY, model=settings.GROQ_MODEL, temperature=0.1)
 
+llm = get_langchain_llm(feature="responder")
 
 def generate_node(state: AgentState):
     """
@@ -70,6 +73,10 @@ def generate_node(state: AgentState):
             # content = response.choices[0].message.content
             # cache_status = extract_cache_status(response)
             # is_cache_hit = cache_status == "HIT"
+            response = llm.invoke(prompt)
+
+            content = response.content
+
 
             # if is_cache_hit:
             #     logfire.info("⚡ Gateway Cache Hit — response served from Portkey cache.")
@@ -80,7 +87,7 @@ def generate_node(state: AgentState):
             #     plan_update = state["plan"]
             #     status = "Response generated."
 
-            content = llm.invoke(prompt).content
+            # content = llm.invoke(prompt).content
             logfire.info("✅Response synthesised via LLM.")
 
             return {
